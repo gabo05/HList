@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 14 for Web
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HList", "HList\HList.csproj", "{1FD52170-5BED-4A15-A6AA-F06813485DCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HListTest", "HListTest\HListTest.csproj", "{167C4201-881A-4202-A147-3925C411677B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FD52170-5BED-4A15-A6AA-F06813485DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD52170-5BED-4A15-A6AA-F06813485DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD52170-5BED-4A15-A6AA-F06813485DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD52170-5BED-4A15-A6AA-F06813485DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167C4201-881A-4202-A147-3925C411677B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167C4201-881A-4202-A147-3925C411677B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167C4201-881A-4202-A147-3925C411677B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167C4201-881A-4202-A147-3925C411677B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
