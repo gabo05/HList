@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HList
 {
-    public class HList<T> : IHList<T>
+    public interface IHList<T>
     {
     }
 }
