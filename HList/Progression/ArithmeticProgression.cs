@@ -82,12 +82,12 @@ namespace HList.Progression
         }
         public override ArithmeticProgression Take(int _count)
         {
-            return new ArithmeticProgression(this.first, this.Difference, count);
+            return new ArithmeticProgression(first: this.first, difference: this.Difference, count: _count);
         }
 
-        public override ArithmeticProgression Take(int start, int count)
+        public override ArithmeticProgression Take(int start, int _count)
         {
-            return new ArithmeticProgression(this.GetElement(start), this.Difference, count);
+            return new ArithmeticProgression(first: this.GetElement(start), difference: this.Difference, count: _count);
         }
 
         public override ArithmeticProgression TakeWhile(Func<double, bool> predicate)
@@ -99,7 +99,7 @@ namespace HList.Progression
             {
                 finish = !predicate(this.GetElement(i));
             }
-            return new ArithmeticProgression(this.first, this.Difference, i);
+            return new ArithmeticProgression(first: this.first, difference: this.Difference, count: i-1);
         }
         
         #endregion

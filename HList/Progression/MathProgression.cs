@@ -166,8 +166,9 @@ namespace HList.Progression
             T acc = default(T);
             double element = this.GetElement(start);
 
-            for (int i = start; i < this.count; i++, element = this.GetElement(i))
+            for (int i = start; i < this.count; i++)
             {
+                element = this.GetElement(i);
                 acc = fold(acc, element);
             }
             return acc;
