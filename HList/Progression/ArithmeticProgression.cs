@@ -9,45 +9,75 @@ namespace HList.Progression
     public class ArithmeticProgression : MathProgression<ArithmeticProgression>
     {
         #region Constructors
-        public ArithmeticProgression(double difference = 1) : base()
+        public ArithmeticProgression() : base()
         {
-            this.Difference = difference;
+            this.Difference = 1;
         }
-        public ArithmeticProgression(double first, double difference = 1, int? count = null) : base(first, count)
-        {
-            this.Difference = difference;
+        public ArithmeticProgression(double first, int? count) : base(first, count) {
+            this.Difference = 1;
         }
-        public ArithmeticProgression(double first, double nelement, int eleinter, int? count = null)
-        {
-            this.first = first;
 
+        public ArithmeticProgression(double difference) : base()
+        {
+            this.Difference = difference;
+        }
+        public ArithmeticProgression(double first, double difference) : base(first, null)
+        {
+            this.Difference = difference;
+        }
+        public ArithmeticProgression(double first, double difference, int? count) : base(first, count)
+        {
+            this.Difference = difference;
+        }
+        public ArithmeticProgression(double first, double nelement, int eleinter, int? count) : base(first, count)
+        {
             int n = eleinter + 1;
-
-            this.count = count;
             this.Difference = (nelement - first) / n;
         }
-        public ArithmeticProgression(double nelement, int n, double difference, int? count = null)
+        public ArithmeticProgression(double nelement, int n, double difference, int? count)
         {
             this.Difference = difference;
             this.first = nelement - (n * difference);
             this.count = count;
         }
-        public ArithmeticProgression(double[] sample, int? count = null)
+        public ArithmeticProgression(double?[] sample, int? count = null)
         {
+            this.count = count;
             if (sample == null || sample.Length == 0)
             {
                 this.first = 0;
             }
-            else if (sample.Length == 1)
+            else if (sample.Length == 1 && sample[0].HasValue)
             {
-                this.first = sample[0];
+                this.first = sample[0].Value;
                 this.Difference = 1;
             }
-            else {
-                this.Difference = sample[1] - sample[0];
-                this.first = sample[0];
+            else if (sample.Length >= 2 && sample[1].HasValue && sample[0].HasValue)
+            {
+                this.Difference = sample[1].Value - sample[0].Value;
+                this.first = sample[0].Value;
             }
-            this.count = count;
+            else if (sample.Length > 2 && !sample[1].HasValue) {
+
+                if (sample.Last().HasValue && sample.First().HasValue)
+                {
+                    this.count = sample.Length;
+                    this.first = sample.First().Value;
+                    this.Difference = (sample.Last().Value - sample.First().Value) / (sample.Length - 1);
+                }
+                else if (!sample.Last().HasValue && sample.First().HasValue) {
+                    this.count = null;
+                    this.first = sample.First().Value;
+                    int ci = sample.TakeWhile((x, i) => i == 0 || !x.HasValue).Count();
+                    if (ci == sample.Length)
+                        throw new ArgumentException("The progression can not be determinate by the arguments");
+                    else {
+                        double nelement = sample[ci].Value;
+
+                        this.Difference = (nelement - sample.First().Value) / ci;
+                    }
+                }
+            }
         }
         #endregion
 

@@ -31,7 +31,7 @@ namespace HListTest
         public void Constructor2Test()
         {
             //Action
-            var ap1 = new ArithmeticProgression(first: 4);
+            var ap1 = new ArithmeticProgression(4D, null);
             var ap2 = new ArithmeticProgression(first: 4, difference: 2);
             var ap3 = new ArithmeticProgression(first: 4, count: 7);
             var ap4 = new ArithmeticProgression(first: 4, difference: 2, count: 7);
@@ -86,7 +86,7 @@ namespace HListTest
         [TestMethod]
         public void Constructor3Test()
         {
-            var ap1 = new ArithmeticProgression(first: 2, nelement: 12, eleinter: 4);
+            var ap1 = new ArithmeticProgression(first: 2, nelement: 12, eleinter: 4, count: null);
             var ap2 = new ArithmeticProgression(first: 2, nelement: 12, eleinter: 4, count: 9);
 
             //Assert
@@ -116,7 +116,7 @@ namespace HListTest
         [TestMethod]
         public void Constructor4Test()
         {
-            var ap1 = new ArithmeticProgression(nelement: 50, n: 12, difference: 4);
+            var ap1 = new ArithmeticProgression(nelement: 50, n: 12, difference: 4, count: null);
             var ap2 = new ArithmeticProgression(nelement: 50, n: 12, difference: 4, count: 9);
 
             //Assert
@@ -146,9 +146,10 @@ namespace HListTest
         [TestMethod]
         public void Constructor5Test()
         {
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 });
-            var ap2 = new ArithmeticProgression(new double[] { 4, 9 }, 7);
-
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 });
+            var ap2 = new ArithmeticProgression(new double?[] { 4, 9 }, 7);
+            var ap3 = new ArithmeticProgression(new double?[] { 4, null, null, 19});
+            var ap4 = new ArithmeticProgression(new double?[] { 4, null, null, 19, null });
             //Assert
             Assert.IsTrue(ap1.IsInfinite);
             Assert.IsNull(ap1.Count());
@@ -158,10 +159,21 @@ namespace HListTest
 
             Assert.IsFalse(ap2.IsInfinite);
             Assert.IsNotNull(ap2.Count());
+            Assert.AreEqual(ap2.Difference, 5D);
+            Assert.AreEqual(ap2.First(), 4D);
+            Assert.AreEqual(ap2.GetElement(5), 29D);
+
+            Assert.IsFalse(ap3.IsInfinite);
+            Assert.IsNotNull(ap3.Count());
+            Assert.AreEqual(ap3.Difference, 5D);
+            Assert.AreEqual(ap3.First(), 4D);
+            Assert.AreEqual(ap3.GetElement(2), 14D);
+
+            Assert.IsTrue(ap1.IsInfinite);
+            Assert.IsNull(ap1.Count());
             Assert.AreEqual(ap1.Difference, 5D);
             Assert.AreEqual(ap1.First(), 4D);
             Assert.AreEqual(ap1.GetElement(5), 29D);
-
             try
             {
                 ap2.GetElement(10);
@@ -176,7 +188,7 @@ namespace HListTest
         [TestMethod]
         public void TestIndexOf() {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 });
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 });
 
             //Action
             var n = ap1.GetIndexOf(49);
@@ -187,8 +199,8 @@ namespace HListTest
         [TestMethod]
         public void SumTest() {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 });
-            var ap2 = new ArithmeticProgression(new double[] { 4, 8 }, 5);
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 });
+            var ap2 = new ArithmeticProgression(new double?[] { 4, 8 }, 5);
             bool error = false;
             //Action
             try {
@@ -205,7 +217,7 @@ namespace HListTest
         [TestMethod]
         public void TestTake() {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 });
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 });
 
             //Action
             var t1 = ap1.Take(7);
@@ -229,7 +241,7 @@ namespace HListTest
         [TestMethod]
         public void TestTakeWhile() {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 });
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 });
 
             //Action
             var t1 = ap1.TakeWhile(x => x < 50);
@@ -245,7 +257,7 @@ namespace HListTest
         [TestMethod]
         public void FoldLeftTest() {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 }, 5);
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 }, 5);
 
             //Action
             var fl1 = ap1.FoldLeft<double>((x, y) => y % 2 == 0 ? x + 2D : x - 1D);
@@ -266,7 +278,7 @@ namespace HListTest
         public void FoldRightTest()
         {
             //Arrange
-            var ap1 = new ArithmeticProgression(new double[] { 4, 9 }, 5);
+            var ap1 = new ArithmeticProgression(new double?[] { 4, 9 }, 5);
 
             //Action
             var fl1 = ap1.FoldRight<double>((x, y) => y % 2 == 0 && x == 0 ? y : x);
