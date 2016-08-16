@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HList.cs" />
+    <Compile Include="IHList.cs" />
+    <Compile Include="Progression\ArithmeticProgression.cs" />
     <Compile Include="Progression\IMathProgression.cs" />
     <Compile Include="Progression\MathProgression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

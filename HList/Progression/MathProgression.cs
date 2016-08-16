@@ -16,64 +16,230 @@ namespace HList.Progression
         #endregion
 
         #region Constructors
-        public MathProgression() {
+        public MathProgression()
+        {
             this.first = 0;
             this.count = null;
         }
-        public MathProgression(double first, int count) {
+        public MathProgression(double first, int? count)
+        {
             this.first = first;
             this.count = count;
         }
         #endregion
 
         #region Abstract Methods
-        public abstract double First(Func<double, bool> predicate);
-        public abstract T FoldLeft<T>(Func<T, double, T> fold);
-        public abstract T FoldRight<T>(Func<T, double, T> fold);
+        
         public abstract double GetElement(int index);
         public abstract int GetIndexOf(double element);
-        public abstract double Last(Func<double, bool> predicate);
-        public abstract IEnumerable<T> Map<T>(Func<double, T> map);
-        public abstract double Sum();
-        public abstract double Sum(Func<double, bool> predicate);
         public abstract R Take(int count);
         public abstract R Take(int start, int count);
         public abstract R TakeWhile(Func<double, bool> predicate);
-        public abstract IEnumerable<double> Where(Func<double, int, bool> predicate);
-        public abstract IEnumerable<double> Where(Func<double, bool> predicate);
-        public abstract T FoldLeft<T>(Func<T, double, T> fold, int start);
-        public abstract T FoldLeft<T>(Func<T, double, T> fold, int start, int end);
-        public abstract T FoldRight<T>(Func<T, double, T> fold, int end);
-        public abstract T FoldRight<T>(Func<T, double, T> fold, int end, int start);
         #endregion
 
         #region Implemented Methods
-        public double First() {
+        public virtual double First()
+        {
             return this.first;
+        }
+        public virtual double? First(Func<double, bool> predicate)
+        {
+            bool found = false;
+            double? _first = null;
+            double pivote;
+            for (int i = 0; (this.IsInfinite || (!this.IsInfinite && i < this.count)) && !found; i++)
+            {
+                pivote = this.GetElement(i);
+                found = predicate(pivote);
+                if (found)
+                    _first = pivote;
+            }
+            return _first;
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
-        public double? Last()
+        public virtual double? Last()
         {
             if (this.IsInfinite)
                 return null;
-            return this.GetElement(this.count.Value -1);
+            return this.GetElement(this.count.Value - 1);
         }
-        public int? Count()
+        public virtual double? Last(Func<double, bool> predicate)
+        {
+            if (this.IsInfinite)
+                return null;
+
+            bool found = false;
+            double? _last = null;
+            double pivote;
+            for (int i = this.count.Value - 1; i >= 0 && !found; i--)
+            {
+                pivote = this.GetElement(i);
+                found = predicate(pivote);
+                if (found)
+                    _last = pivote;
+            }
+            return _last;
+        }
+        public virtual int? Count()
         {
             return count;
         }
 
-        public bool Contains(double element)
+        public virtual bool Contains(double element)
         {
             return this.GetIndexOf(element) != -1;
         }
-        public IEnumerator<double> GetEnumerator()
+        public virtual IEnumerator<double> GetEnumerator()
         {
-            for (int i=0; this.IsInfinite || (!this.IsInfinite && i < this.count);i++) {
+            for (int i = 0; this.IsInfinite || (!this.IsInfinite && i < this.count); i++)
+            {
                 yield return this.GetElement(i);
+            }
+        }
+        public virtual IEnumerable<T> Map<T>(Func<double, T> map)
+        {
+            foreach (double element in this)
+            {
+                yield return map(element);
+            }
+        }
+        public virtual IEnumerable<T> Map<T>(Func<double, T> map, int start)
+        {
+            for (int i = start; this.IsInfinite || (!this.IsInfinite && i < this.count); i++)
+            {
+                yield return map(this.GetElement(i));
+            }
+        }
+        public virtual IEnumerable<T> Map<T>(Func<double, T> map, int start, int end)
+        {
+            for (int i = start; i <= end; i++)
+            {
+                yield return map(this.GetElement(i));
+            }
+        }
+        public virtual double Sum()
+        {
+            if (this.IsInfinite)
+                throw new InvalidOperationException("This is an infinite progression");
+
+            double _sum = 0;
+
+            foreach (double element in this)
+                _sum += element;
+            return _sum;
+        }
+        public virtual double Sum(Func<double, bool> predicate) {
+            if (this.IsInfinite)
+                throw new InvalidOperationException("This is an infinite progression");
+
+            double _sum = 0;
+
+            foreach (double element in this)
+            {
+                if(predicate(element))
+                    _sum += element;
+            }
+                
+            return _sum;
+        }
+        public virtual T FoldLeft<T>(Func<T, double, T> fold)
+        {
+            if (this.IsInfinite)
+                throw new InvalidOperationException("This is an infinite progression");
+
+            T acc = default(T);
+
+            foreach (double element in this)
+            {
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual T FoldLeft<T>(Func<T, double, T> fold, int start)
+        {
+            if (this.IsInfinite)
+                throw new InvalidOperationException("This is an infinite progression");
+
+            T acc = default(T);
+            double element = this.GetElement(start);
+
+            for (int i = start; i < this.count; i++)
+            {
+                element = this.GetElement(i);
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual T FoldLeft<T>(Func<T, double, T> fold, int start, int end)
+        {
+            T acc = default(T);
+            double element = this.GetElement(start);
+
+            for (int i = start; i <= end; i++, element = this.GetElement(i))
+            {
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual T FoldRight<T>(Func<T, double, T> fold) {
+            if (this.IsInfinite)
+                throw new InvalidOperationException("This is an infinite progression");
+
+            T acc = default(T);
+            double element = this.Last().Value;
+
+            for (int i = this.count.Value -1; i >= 0; i--, element = this.GetElement(i))
+            {
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual T FoldRight<T>(Func<T, double, T> fold, int end)
+        {
+            T acc = default(T);
+            double element = this.GetElement(end);
+
+            for (int i = end; i >= 0; i--, element = this.GetElement(i))
+            {
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual T FoldRight<T>(Func<T, double, T> fold, int end, int start)
+        {
+            T acc = default(T);
+            double element = this.GetElement(end);
+
+            for (int i = end; i >= start; i--, element = this.GetElement(i))
+            {
+                acc = fold(acc, element);
+            }
+            return acc;
+        }
+        public virtual IEnumerable<double> Where(Func<double, bool> predicate)
+        {
+            double pivote = 0;
+
+            for (int i = 0; (this.IsInfinite || (!this.IsInfinite && i < this.count)); i++)
+            {
+                pivote = this.GetElement(i);
+                if (predicate(pivote))
+                    yield return pivote;
+            }
+        }
+
+        public virtual IEnumerable<double> Where(Func<double, int, bool> predicate)
+        {
+            double pivote = 0;
+
+            for (int i = 0; (this.IsInfinite || (!this.IsInfinite && i < this.count)); i++)
+            {
+                pivote = this.GetElement(i);
+                if (predicate(pivote, i))
+                    yield return pivote;
             }
         }
         #endregion

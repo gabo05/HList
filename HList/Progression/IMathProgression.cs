@@ -13,9 +13,9 @@ namespace HList.Progression
         int? Count();
         bool Contains(double element);
         double First();
-        double First(Func<double, bool> predicate);
+        double? First(Func<double, bool> predicate);
         double? Last();
-        double Last(Func<double, bool> predicate);
+        double? Last(Func<double, bool> predicate);
         double Sum();
         double Sum(Func<double, bool> predicate);
         T FoldLeft<T>(Func<T, double, T> fold);
@@ -25,6 +25,8 @@ namespace HList.Progression
         T FoldRight<T>(Func<T, double, T> fold, int end);
         T FoldRight<T>(Func<T, double, T> fold, int end, int start);
         IEnumerable<T> Map<T>(Func<double, T> map);
+        IEnumerable<T> Map<T>(Func<double, T> map, int start);
+        IEnumerable<T> Map<T>(Func<double, T> map, int start, int end);
         IEnumerable<double> Where(Func<double, bool> predicate);
         IEnumerable<double> Where(Func<double, int, bool> predicate);
     }
