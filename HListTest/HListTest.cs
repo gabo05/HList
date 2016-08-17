@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
-namespace HListTest
+namespace HList.Test
 {
     [TestClass]
     public class HListTest
