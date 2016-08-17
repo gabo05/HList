@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HList", "HList\HList.csproj", "{1FD52170-5BED-4A15-A6AA-F06813485DCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HListTest", "HListTest\HListTest.csproj", "{167C4201-881A-4202-A147-3925C411677B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HList.Test", "HListTest\HList.Test.csproj", "{167C4201-881A-4202-A147-3925C411677B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

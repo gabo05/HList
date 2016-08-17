@@ -112,11 +112,20 @@ namespace HList.Progression
         }
         public override ArithmeticProgression Take(int _count)
         {
+            if (!this.IsInfinite && this.count.Value < _count)
+                _count = this.count.Value;
+
             return new ArithmeticProgression(first: this.first, difference: this.Difference, count: _count);
         }
 
         public override ArithmeticProgression Take(int start, int _count)
         {
+            if (!this.IsInfinite)
+            {
+                var rest = (this.count.Value - start);
+
+                _count = rest < _count ? rest : _count;
+            }
             return new ArithmeticProgression(first: this.GetElement(start), difference: this.Difference, count: _count);
         }
 
